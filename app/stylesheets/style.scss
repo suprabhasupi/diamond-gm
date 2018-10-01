@@ -5,6 +5,11 @@ table.diamondsweeper-board {
   }
 }
 
+#container {
+  display: flex;
+  justify-content: center;
+}
+
 .cell {
   height: 50px;
   width: 50px;

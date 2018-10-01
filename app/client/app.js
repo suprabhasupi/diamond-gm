@@ -1,5 +1,4 @@
 global.startApp = function(container) {
-  console.log("Here is the container:", container);
   let table = document.querySelector('.diamondsweeper-board');
   let rows = 8;
   let columns = 8;
@@ -32,8 +31,18 @@ global.startApp = function(container) {
   }
 
   console.log('diamondIndexes--->>', diamondIndexes)
-
+  function resetView() {
+    let i = 0;
+    let cells = document.querySelectorAll('.diamondsweeper-board tr td');
+    while(i < cells.length){
+      if(!cells[i].classList.contains('diamond')){
+        cells[i].className = 'cell unknown';
+      }
+      i = i + 1;
+    }
+  }
   function handleCell() {
+    resetView();
     let cellIndex = this.getAttribute('id');
     if (this.classList.contains('unknown')) {
       this.classList.remove('unknown');
