@@ -42,6 +42,11 @@ global.startApp = function(container) {
 
     if (diamondIndexes.indexOf(cellIndex) == -1) {
       this.classList.add('arrow');
+      let nearestDimaondDirection = findNearestDiamond(cellIndex);
+      if (nearestDimaondDirection === 'no-near-diamond'){
+        this.classList.remove('arrow');
+      }
+      this.classList.add(nearestDimaondDirection);
     } else {
       let td = document.querySelectorAll('.diamondsweeper-board tr td');
       let allCells = td.length;
@@ -52,5 +57,67 @@ global.startApp = function(container) {
         alert(`Game Over! Your score is ${score}`);
       }
     }
+  }
+
+  function findNearestDiamond(cellIndex) {
+    let diamondsInSameRow = [];
+    let diamondsInSameColumn = [];
+    let cellX = cellIndex.substring(4, 5);
+    let cellY = cellIndex.substring(6, 7);
+
+    console.group('Clicked value');
+    console.log('cellIndex = ', cellIndex)
+    console.log('cellX     = ', cellX)
+    console.log('cellY     = ', cellY)
+    console.log('----------------------');
+    console.groupEnd('Clicked value');
+
+    for (var i = 0; i < diamondIndexes.length; i++) {
+      let diamondX = diamondIndexes[i].substring(4, 5);
+      let diamondY = diamondIndexes[i].substring(6, 7);
+      console.group('diamonds');
+      console.table({'diamondIndexs[i]': diamondIndexes[i], 'diamondX': diamondX, 'diamondY': diamondY});
+      console.groupEnd('diamonds');
+      if (cellY === diamondY) {
+          if (cellX < diamondX) {
+            let d = {
+              direction: 'down',
+              distances: diamondX -cellX,
+            }
+            diamondsInSameRow.push(d);
+          } else if (cellX > diamondX) {
+          let d = {
+            direction: 'up',
+            distances: cellX - diamondX,
+          }
+          diamondsInSameRow.push(d);
+        }
+      }
+      if (cellX === diamondX) {
+        if (cellY < diamondY) {
+          let d = {
+            direction: 'right',
+            distances: diamondY - cellY
+          }
+          diamondsInSameColumn.push(d);
+        } else if (cellY > diamondY) {
+          let d = {
+            direction: 'left',
+            distances: cellY - diamondY
+          }
+          diamondsInSameColumn.push(d);
+        }
+      }
+    }
+
+    let diamondsInRowColumns = diamondsInSameColumn.concat(diamondsInSameRow);
+    if (diamondsInRowColumns.length === 0) {
+      return 'no-near-diamond'
+    }
+    let nearestDiamond = diamondsInRowColumns.reduce(function(prev, current) {
+      return (prev.distances < current.distances) ? prev : current
+    })
+
+    return nearestDiamond.direction
   }
 }

@@ -24,6 +24,22 @@ table.diamondsweeper-board {
     background-image: url(question.png);
     background-color: antiquewhite;
   }
+  &.up{
+    transform: rotate(-90deg);
+  }
+
+  &.down{
+    transform: rotate(90deg);
+  }
+
+  &.left{
+    transform: rotate(180deg);
+  }
+
+  &.no-near-diamond {
+    background-image: url(no-diamond.png);
+  }
+
 }
 
 
