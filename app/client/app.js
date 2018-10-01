@@ -16,6 +16,23 @@ global.startApp = function(container) {
         td.setAttribute('class', 'cell unknown');
         tr.appendChild(td);
         index++;
+        td.addEventListener('click', handleCell);
       }
+  }
+
+  let diamondIndexes = [];
+  while (diamondIndexes.length < 8) {
+      let randomRows = Math.random() * rows;
+      let randomColumns = Math.random() * columns;
+      let diamondIndex = 'cell' + Math.floor(randomRows) + '-' + Math.floor(randomColumns);
+      if (diamondIndexes.indexOf(diamondIndex) == -1) {
+          diamondIndexes.push(diamondIndex);
+      }
+  }
+
+   console.log('diamondIndexes--->>', diamondIndexes)
+
+  function handleCell() {
+    console.log('handleCellClick')
   }
 }

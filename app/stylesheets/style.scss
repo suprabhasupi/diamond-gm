@@ -9,9 +9,11 @@ table.diamondsweeper-board {
   height: 50px;
   width: 50px;
   background-size: 50px 50px;
+  transition: 0.5s;
 
   &.diamond {
     background-image: url(diamond.png);
+    background-color: hsl(59, 100%, 62%);
   }
 
   &.arrow {
@@ -20,6 +22,7 @@ table.diamondsweeper-board {
 
   &.unknown {
     background-image: url(question.png);
+    background-color: antiquewhite;
   }
 }
 
