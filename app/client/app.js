@@ -4,8 +4,9 @@ global.startApp = function(container) {
   let rows = 8;
   let columns = 8;
   let index = 0;
-  let getDiamond = 0;
-  let remainingBoxes = 0;
+  let diamondFound = 0;
+  let openedCells = 0;
+  let score = 0;
 
   for(let i = 0; i < rows; i++) {
     let tr = document.createElement('tr');
@@ -30,9 +31,26 @@ global.startApp = function(container) {
       }
   }
 
-   console.log('diamondIndexes--->>', diamondIndexes)
+  console.log('diamondIndexes--->>', diamondIndexes)
 
   function handleCell() {
-    console.log('handleCellClick')
+    let cellIndex = this.getAttribute('id');
+    if (this.classList.contains('unknown')) {
+      this.classList.remove('unknown');
+      openedCells += 1;
+    }
+
+    if (diamondIndexes.indexOf(cellIndex) == -1) {
+      this.classList.add('arrow');
+    } else {
+      let td = document.querySelectorAll('.diamondsweeper-board tr td');
+      let allCells = td.length;
+      this.classList.add('diamond');
+      diamondFound += 1;
+      score = allCells - openedCells;
+      if (diamondFound === 8) {
+        alert(`Game Over! Your score is ${score}`);
+      }
+    }
   }
 }
