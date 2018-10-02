@@ -74,13 +74,6 @@ global.startApp = function(container) {
     let cellX = cellIndex.substring(4, 5);
     let cellY = cellIndex.substring(6, 7);
 
-    console.group('Clicked value');
-    console.log('cellIndex = ', cellIndex)
-    console.log('cellX     = ', cellX)
-    console.log('cellY     = ', cellY)
-    console.log('----------------------');
-    console.groupEnd('Clicked value');
-
     for (var i = 0; i < diamondIndexes.length; i++) {
       let diamondX = diamondIndexes[i].substring(4, 5);
       let diamondY = diamondIndexes[i].substring(6, 7);
