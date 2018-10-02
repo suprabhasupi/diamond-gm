@@ -2,7 +2,8 @@ const webpack = require("webpack");
 const process = require('process');
 const path = require('path');
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PUBLIC_PATH='/assets/';
@@ -41,7 +42,7 @@ const webpackConfig = {
     rules: [
       { test: /\.jsx?$/, exclude: /node_modules/, use: BABEL_PRESET },
       { test: /\.jsx?$/, include: /node_modules\/quintype-toddy-libs/, use: BABEL_PRESET },
-      { test: /\.(sass|scss)$/, use:["style-loader", "css-loader", "sass-loader"]},
+      { test: /\.(sass|scss)$/, use: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])},
       { test: /\.(jpeg|gif|png|svg|woff|ttf|wav|mp3)$/,
         use: {
           loader: "file-loader",
@@ -53,7 +54,7 @@ const webpackConfig = {
      },
     ]
   },
-  plugins: [new MiniCssExtractPlugin({ filename: "[name].css" }),
+  plugins: [new ExtractTextPlugin({ filename: "[name].css" }),
   new webpack.HotModuleReplacementPlugin(),
   new HtmlWebpackPlugin({
     template       : 'views/home/index.ejs',
