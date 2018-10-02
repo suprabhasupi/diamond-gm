@@ -15,9 +15,6 @@ const BABEL_PRESET = {
   }
 };
 
-const ENV = process.env.NODE_ENV;
-const pkgJson = require('./package.json');
-
 const webpackConfig = {
   entry: {
     app: "./app/client/app.js",
@@ -28,6 +25,7 @@ const webpackConfig = {
       filename: `[name].js`,
       publicPath: PUBLIC_PATH,
   },
+  mode: 'development',
   devServer: {
       host: '0.0.0.0',
       port: 9394,
@@ -43,7 +41,7 @@ const webpackConfig = {
     rules: [
       { test: /\.jsx?$/, exclude: /node_modules/, use: BABEL_PRESET },
       { test: /\.jsx?$/, include: /node_modules\/quintype-toddy-libs/, use: BABEL_PRESET },
-      { test: /\.(sass|scss)$/, use:[{loader: MiniCssExtractPlugin.loader},"css-loader"]},
+      { test: /\.(sass|scss)$/, use:["style-loader", "css-loader", "sass-loader"]},
       { test: /\.(jpeg|gif|png|svg|woff|ttf|wav|mp3)$/,
         use: {
           loader: "file-loader",
@@ -57,13 +55,9 @@ const webpackConfig = {
   },
   plugins: [new MiniCssExtractPlugin({ filename: "[name].css" }),
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.DefinePlugin({
-    'process.env': `"${ENV}"`
-  }),
   new HtmlWebpackPlugin({
     template       : 'views/home/index.ejs',
-    filename       : 'index.html',
-    pkg            : pkgJson
+    filename       : 'index.html'
   })]
 };
 
