@@ -3,6 +3,7 @@ const process = require('process');
 const path = require('path');
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PUBLIC_PATH='/assets/';
 const OUTPUT_DIRECTORY = __dirname + `/public/${PUBLIC_PATH}`;
@@ -14,46 +15,57 @@ const BABEL_PRESET = {
   }
 };
 
-// const ENV = process.env.NODE_ENV;
+const ENV = process.env.NODE_ENV;
+const pkgJson = require('./package.json');
 
-module.exports = {
-    entry: {
-      app: "./app/client/app.js",
-      style: "./app/stylesheets/style.scss"
-    },
-    output: {
-        path: OUTPUT_DIRECTORY,
-        filename: `[name].js`,
-        publicPath: PUBLIC_PATH,
-    },
-    devServer: {
-      index: 'views/home/index.ejs',
+const webpackConfig = {
+  entry: {
+    app: "./app/client/app.js",
+    style: "./app/stylesheets/style.scss"
+  },
+  output: {
+      path: OUTPUT_DIRECTORY,
+      filename: `[name].js`,
+      publicPath: PUBLIC_PATH,
+  },
+  devServer: {
       host: '0.0.0.0',
       port: 9394,
       inline: true,
       hot: true,
-      contentBase: 'public',
+      contentBase: path.join(__dirname, 'public/assets'),
       stats: {
         chunks: false
       },
     },
 
-    module: {
-      rules: [
-        { test: /\.jsx?$/, exclude: /node_modules/, use: BABEL_PRESET },
-        { test: /\.jsx?$/, include: /node_modules\/quintype-toddy-libs/, use: BABEL_PRESET },
-        { test: /\.(sass|scss)$/, use:[{loader: MiniCssExtractPlugin.loader},"css-loader"]},
-        { test: /\.(jpeg|gif|png|svg|woff|ttf|wav|mp3)$/,
-          use: {
-            loader: "file-loader",
-            query: {
-              context: './app/assets',
-              name: "[name].[ext]"
-            }
+  module: {
+    rules: [
+      { test: /\.jsx?$/, exclude: /node_modules/, use: BABEL_PRESET },
+      { test: /\.jsx?$/, include: /node_modules\/quintype-toddy-libs/, use: BABEL_PRESET },
+      { test: /\.(sass|scss)$/, use:[{loader: MiniCssExtractPlugin.loader},"css-loader"]},
+      { test: /\.(jpeg|gif|png|svg|woff|ttf|wav|mp3)$/,
+        use: {
+          loader: "file-loader",
+          query: {
+            context: './app/assets',
+            name: "[name].[ext]"
           }
-       },
-      ]
-    },
-    plugins: [new MiniCssExtractPlugin({ filename: "[name].css" }),
-    new webpack.HotModuleReplacementPlugin()]
+        }
+     },
+    ]
+  },
+  plugins: [new MiniCssExtractPlugin({ filename: "[name].css" }),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.DefinePlugin({
+    'process.env': `"${ENV}"`
+  }),
+  new HtmlWebpackPlugin({
+    template       : 'views/home/index.ejs',
+    filename       : 'index.html',
+    pkg            : pkgJson
+  })]
 };
+
+
+module.exports = webpackConfig;
