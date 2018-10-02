@@ -17,16 +17,16 @@ table.diamondsweeper-board {
   transition: 0.5s;
 
   &.diamond {
-    background-image: url(diamond.png);
+    background-image: url(../assets/diamond.png);
     background-color: hsl(59, 100%, 62%);
   }
 
   &.arrow {
-    background-image: url(arrow.png);
+    background-image: url(../assets/arrow.png);
   }
 
   &.unknown {
-    background-image: url(question.png);
+    background-image: url(../assets/question.png);
     background-color: antiquewhite;
   }
   &.up{
@@ -42,7 +42,7 @@ table.diamondsweeper-board {
   }
 
   &.no-near-diamond {
-    background-image: url(no-diamond.png);
+    background-image: url(../assets/no-diamond.png);
   }
 
 }
